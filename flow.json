@@ -62,18 +62,20 @@
         "z": "e2d701b4e32df305",
         "name": "",
         "props": [],
-        "repeat": "1",
+        "repeat": "2",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 270,
-        "y": 180,
+        "x": 210,
+        "y": 220,
         "wires": [
             [
                 "d5dab8a863eb5555",
                 "08083107fe307cb1",
-                "740aa2f5b434f185"
+                "740aa2f5b434f185",
+                "f08730c5165eb230",
+                "3e38d10398712abb"
             ]
         ]
     },
@@ -100,7 +102,7 @@
         "id": "920a18193e5c70d8",
         "type": "firebase modify",
         "z": "e2d701b4e32df305",
-        "name": "voltage",
+        "name": "Current",
         "firebaseconfig": "cdb68cd5a6c972d7",
         "childpath": "Current",
         "method": "set",
@@ -116,13 +118,13 @@
         "id": "fdeaa38a85f73a8c",
         "type": "firebase modify",
         "z": "e2d701b4e32df305",
-        "name": "voltage",
+        "name": "PQA",
         "firebaseconfig": "cdb68cd5a6c972d7",
         "childpath": "PQA",
         "method": "set",
         "value": "msg.payload",
         "priority": "msg.priority",
-        "x": 600,
+        "x": 590,
         "y": 300,
         "wires": [
             []
@@ -145,6 +147,119 @@
             [
                 "fdeaa38a85f73a8c"
             ]
+        ]
+    },
+    {
+        "id": "f08730c5165eb230",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "referencia global",
+        "func": "var reference = global.get('Referencia')||0;\ncontext.set('monitoreo',reference);\nnode.status({fill:\"red\",shape:\"ring\",text:\"referencia\" + reference});\nmsg.payload = reference;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 360,
+        "wires": [
+            [
+                "abbc16a765ce1b85",
+                "ca4f31f1998f863d"
+            ]
+        ]
+    },
+    {
+        "id": "abbc16a765ce1b85",
+        "type": "debug",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 630,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ca4f31f1998f863d",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "func": "var data = msg.payload;\nnode.status({fill:\"red\",shape:\"ring\",text:\"Data\" + data});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "75746c1cf1f1c889",
+        "type": "firebase modify",
+        "z": "e2d701b4e32df305",
+        "name": "referenciaFeedback",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "referenciaFeedback",
+        "method": "set",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 600,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3e38d10398712abb",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "func": "msg.payload = global.get('Referencia')||0;\nnode.status({fill:\"blue\",shape:\"dot\",text:\"message\" + msg.payload});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 100,
+        "wires": [
+            [
+                "75746c1cf1f1c889"
+            ]
+        ]
+    },
+    {
+        "id": "7d6087ec82a9fb5d",
+        "type": "change",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 860,
+        "y": 180,
+        "wires": [
+            []
         ]
     },
     {
@@ -196,7 +311,8 @@
         "y": 100,
         "wires": [
             [
-                "f9725ee1275e8af1"
+                "f9725ee1275e8af1",
+                "4aca522189583f56"
             ]
         ]
     },
@@ -227,11 +343,12 @@
         "atStart": true,
         "eventType": "value",
         "queries": [],
-        "x": 300,
-        "y": 240,
+        "x": 260,
+        "y": 340,
         "wires": [
             [
-                "a65c55f2a1370857"
+                "a65c55f2a1370857",
+                "c6f20766e977bc65"
             ]
         ]
     },
@@ -240,7 +357,7 @@
         "type": "debug",
         "z": "dfd5234e75c9bc2c",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": true,
@@ -248,8 +365,8 @@
         "targetType": "msg",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 520,
-        "y": 240,
+        "x": 450,
+        "y": 340,
         "wires": []
     },
     {
@@ -262,16 +379,179 @@
         "atStart": true,
         "eventType": "value",
         "queries": [],
-        "x": 290,
-        "y": 360,
+        "x": 270,
+        "y": 220,
         "wires": [
             [
-                "98fb4ccc7ddb0857"
+                "98fb4ccc7ddb0857",
+                "d00336baafe91239"
             ]
         ]
     },
     {
         "id": "98fb4ccc7ddb0857",
+        "type": "debug",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 430,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "c6f20766e977bc65",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "var referencia = msg.payload;\nnode.status({fill:\"red\",shape:\"ring\",text:\"Ref \" + referencia});\nglobal.set('Referencia',referencia);",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4aca522189583f56",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "var data = msg.payload;\ncontext.set('data',data,'memoryOnly');\nflow.set('data',data,'memoryOnly');\ncontext.set('data1',data);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d00336baafe91239",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "var objeto = msg;\ncontext.set('objeto',objeto,'memoryOnly');\nvar voltaje = objeto.payload.Voltage;\n\nnode.status({fill:\"red\",shape:\"ring\",text:\"message\" + voltaje});\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c3a765d45348d24c",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "var objeto = {\n    vibracion:10,\n    motor:'Imanes',\n    marca:'Siemens',\n}\ncontext.set('variables',objeto,'memoryOnly');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2e2a61d21632df13",
+        "type": "inject",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 730,
+        "y": 120,
+        "wires": [
+            [
+                "c3a765d45348d24c"
+            ]
+        ]
+    },
+    {
+        "id": "fb0610970200dfb2",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "var payload = msg.payload; //get payload\nmsg.payload = payload.toUpperCase(); //convert to uppercase\nvar topic = msg.topic; //get topic\nmsg.topic = topic.toUpperCase();//convert to uppercase\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 200,
+        "wires": [
+            [
+                "986f56ffd0657d71"
+            ]
+        ]
+    },
+    {
+        "id": "d1a22c9d1f4b05f6",
+        "type": "inject",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "Hola",
+        "payload": "Juan",
+        "payloadType": "str",
+        "x": 680,
+        "y": 200,
+        "wires": [
+            [
+                "fb0610970200dfb2"
+            ]
+        ]
+    },
+    {
+        "id": "986f56ffd0657d71",
         "type": "debug",
         "z": "dfd5234e75c9bc2c",
         "name": "",
@@ -283,23 +563,29 @@
         "targetType": "full",
         "statusVal": "payload",
         "statusType": "auto",
-        "x": 510,
-        "y": 360,
+        "x": 1030,
+        "y": 200,
         "wires": []
     },
     {
-        "id": "c6f20766e977bc65",
-        "type": "function",
+        "id": "f9aa89ab8ee73e20",
+        "type": "switch",
         "z": "dfd5234e75c9bc2c",
         "name": "",
-        "func": "msg.key = \"PQA\"\nmsg.payload = { \"Current\": 12, \"Voltage\": 56 };\nreturn msg;",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
         "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 310,
-        "y": 480,
+        "x": 970,
+        "y": 340,
         "wires": [
             []
         ]
