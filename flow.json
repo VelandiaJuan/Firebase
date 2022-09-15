@@ -1,1 +1,307 @@
-[]
+[
+    {
+        "id": "e2d701b4e32df305",
+        "type": "tab",
+        "label": "Envio",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "dfd5234e75c9bc2c",
+        "type": "tab",
+        "label": "Recepción",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "cdb68cd5a6c972d7",
+        "type": "firebase config",
+        "firebaseurl": "cila-1-c09d7-default-rtdb",
+        "loginType": "none"
+    },
+    {
+        "id": "14510b9e4ba804ba",
+        "type": "firebase modify",
+        "z": "e2d701b4e32df305",
+        "name": "voltage",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "Voltage",
+        "method": "set",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 600,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d5dab8a863eb5555",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "Generar Valores",
+        "func": "msg.payload = getRandomArbitrary(430,445),\nnode.status({fill:\"blue\",shape:\"ring\",text:\"value\" + msg.payload});\nreturn msg;\n// funcion para generar numeros aleatorios\nfunction getRandomArbitrary(min, max, entero = false,decimal = 2) {//Funcion para generar numero random\n    if (entero) {\n        return parseInt(Math.random() * (max - min) + min);\n    } else {\n        return parseFloat(Math.random() * (max - min) + min).toFixed(decimal);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 160,
+        "wires": [
+            [
+                "14510b9e4ba804ba"
+            ]
+        ]
+    },
+    {
+        "id": "9b529be1678f1e87",
+        "type": "inject",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "props": [],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "d5dab8a863eb5555",
+                "08083107fe307cb1",
+                "740aa2f5b434f185"
+            ]
+        ]
+    },
+    {
+        "id": "08083107fe307cb1",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "Generar Valores",
+        "func": "msg.payload = getRandomArbitrary(60,65),\nnode.status({fill:\"blue\",shape:\"ring\",text:\"value\" + msg.payload});\nreturn msg;\n// funcion para generar numeros aleatorios\nfunction getRandomArbitrary(min, max, entero = false,decimal = 2) {//Funcion para generar numero random\n    if (entero) {\n        return parseInt(Math.random() * (max - min) + min);\n    } else {\n        return parseFloat(Math.random() * (max - min) + min).toFixed(decimal);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 220,
+        "wires": [
+            [
+                "920a18193e5c70d8"
+            ]
+        ]
+    },
+    {
+        "id": "920a18193e5c70d8",
+        "type": "firebase modify",
+        "z": "e2d701b4e32df305",
+        "name": "voltage",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "Current",
+        "method": "set",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 600,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fdeaa38a85f73a8c",
+        "type": "firebase modify",
+        "z": "e2d701b4e32df305",
+        "name": "voltage",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "PQA",
+        "method": "set",
+        "value": "msg.payload",
+        "priority": "msg.priority",
+        "x": 600,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "740aa2f5b434f185",
+        "type": "function",
+        "z": "e2d701b4e32df305",
+        "name": "",
+        "func": "msg.key = \"PQA\"\nmsg.payload = { \"Current\": getRandomArbitrary(10,20), \"Voltage\": getRandomArbitrary(10,12) };\nreturn msg;\nfunction getRandomArbitrary(min, max, entero = false, decimal = 2) {//Funcion para generar numero random\n    if (entero) {\n        return parseInt(Math.random() * (max - min) + min);\n    } else {\n        return parseFloat(Math.random() * (max - min) + min).toFixed(decimal);\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "fdeaa38a85f73a8c"
+            ]
+        ]
+    },
+    {
+        "id": "e1a9f39494661ce5",
+        "type": "firebase.on",
+        "z": "dfd5234e75c9bc2c",
+        "name": "Voltage",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "Voltage",
+        "atStart": true,
+        "eventType": "value",
+        "queries": [],
+        "x": 270,
+        "y": 160,
+        "wires": [
+            [
+                "402e68ad7a694cc0"
+            ]
+        ]
+    },
+    {
+        "id": "402e68ad7a694cc0",
+        "type": "debug",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 450,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "6045356a2a6350bd",
+        "type": "firebase.on",
+        "z": "dfd5234e75c9bc2c",
+        "name": "Current",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "Current",
+        "atStart": true,
+        "eventType": "value",
+        "queries": [],
+        "x": 270,
+        "y": 100,
+        "wires": [
+            [
+                "f9725ee1275e8af1"
+            ]
+        ]
+    },
+    {
+        "id": "f9725ee1275e8af1",
+        "type": "debug",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 450,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "c18805d493a9b649",
+        "type": "firebase.on",
+        "z": "dfd5234e75c9bc2c",
+        "name": "Referencia",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "Referencia",
+        "atStart": true,
+        "eventType": "value",
+        "queries": [],
+        "x": 300,
+        "y": 240,
+        "wires": [
+            [
+                "a65c55f2a1370857"
+            ]
+        ]
+    },
+    {
+        "id": "a65c55f2a1370857",
+        "type": "debug",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 520,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "41bee8e012b1e054",
+        "type": "firebase.on",
+        "z": "dfd5234e75c9bc2c",
+        "name": "PQA",
+        "firebaseconfig": "cdb68cd5a6c972d7",
+        "childpath": "PQA",
+        "atStart": true,
+        "eventType": "value",
+        "queries": [],
+        "x": 290,
+        "y": 360,
+        "wires": [
+            [
+                "98fb4ccc7ddb0857"
+            ]
+        ]
+    },
+    {
+        "id": "98fb4ccc7ddb0857",
+        "type": "debug",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": true,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 510,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c6f20766e977bc65",
+        "type": "function",
+        "z": "dfd5234e75c9bc2c",
+        "name": "",
+        "func": "msg.key = \"PQA\"\nmsg.payload = { \"Current\": 12, \"Voltage\": 56 };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    }
+]
